@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Smart_Assistant</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <dimen name="large">30dp</dimen>
+</resources>

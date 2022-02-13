@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/active.xml" value="0.3707692307692308" />
+        <entry key="app/src/main/res/drawable/active_right.xml" value="0.3765625" />
+        <entry key="app/src/main/res/drawable/outline.xml" value="0.3765625" />
+        <entry key="app/src/main/res/drawable/outline_left.xml" value="0.3765625" />
+        <entry key="app/src/main/res/drawable/outline_right.xml" value="0.3765625" />
+        <entry key="app/src/main/res/layout/activity_car_owner_help.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/layout/activity_car_owner_register.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/layout/activity_mechanic_home.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_mechanic_location.xml" value="0.22056159420289856" />
+        <entry key="app/src/main/res/layout/activity_mechanics_register.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_owner_home.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_phone_number.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_setup.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/alert_close_mechanic.xml" value="0.25" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
