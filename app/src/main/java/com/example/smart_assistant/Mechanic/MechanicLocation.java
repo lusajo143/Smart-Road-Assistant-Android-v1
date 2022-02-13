@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.smart_assistant.R;
+import com.example.smart_assistant.SetEmail;
+import com.example.smart_assistant.Setup;
 import com.example.smart_assistant.publicClass;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -60,24 +63,24 @@ public class MechanicLocation extends AppCompatActivity implements OnMapReadyCal
 
         next.setOnClickListener(v -> {
             if (garageLocation != null) {
-                setLocation(getIntent().getStringExtra("id"), garageLocation.latitude, garageLocation.longitude);
+                setLocation(getIntent().getStringExtra("username"), garageLocation.latitude, garageLocation.longitude);
             }
         });
 
     }
 
-    private void setLocation(String id, double latitude, double longitude) {
+    private void setLocation(String username, double latitude, double longitude) {
         AlertDialog loading = publicClass.loading(MechanicLocation.this);
         loading.show();
-        StringRequest request = new StringRequest(Request.Method.POST, publicClass.baseUrl + "setLocation.php",
+        StringRequest request = new StringRequest(Request.Method.POST, publicClass.baseUrl + "setLocation",
                 response -> {
                     loading.dismiss();
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getString("resp").equals("done")) {
-                            startActivity(new Intent(MechanicLocation.this, MechanicHome.class).putExtra("id", id));
+                        if (object.getString("status").equals("success")) {
+                            startActivity(new Intent(MechanicLocation.this, SetEmail.class).putExtra("username", username));
                         } else {
-                            Toast.makeText(MechanicLocation.this, "Server error! Try again", Toast.LENGTH_SHORT).show();
+                            publicClass.alert(MechanicLocation.this, object.getString("message"));
                         }
                     } catch (Exception e) {
                         Toast.makeText(MechanicLocation.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -85,15 +88,16 @@ public class MechanicLocation extends AppCompatActivity implements OnMapReadyCal
                 },
                 error -> {
                     loading.dismiss();
+                    Log.d("TAG", "setLocation: "+error.getMessage());
                     Toast.makeText(MechanicLocation.this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
                 }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() {
                 HashMap<String, String> params = new HashMap<>();
-                params.put("id", id);
-                params.put("lat", latitude + "");
-                params.put("long", longitude + "");
+                params.put("username", username);
+                params.put("latitude", latitude + "");
+                params.put("longitude", longitude + "");
                 return params;
             }
         };

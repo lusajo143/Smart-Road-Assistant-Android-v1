@@ -3,6 +3,7 @@ package com.example.smart_assistant;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,14 +62,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         response -> {
                             loading.dismiss();
                             try {
+
                                 JSONObject object = new JSONObject(response);
-                                if (object.getString("resp").equals("done")) {
+                                if (object.getString("status").equals("success")) {
                                     new dbHelper(Login.this)
-                                            .insertUser(object.getString("id"), object.getString("type"));
-                                    if (object.getString("type").equals("owner"))
+                                            .insertUser( username.getText().toString(), object.getJSONObject("data").getString("role"));
+                                    if (object.getJSONObject("data").getString("role").equals("Car owner"))
                                         startActivity(new Intent(Login.this, OwnerHome.class));
                                     else
                                         startActivity(new Intent(Login.this, MechanicHome.class));
+                                } else {
+                                    publicClass.alert(Login.this, object.getString("message"));
                                 }
                             } catch (Exception e) {
                                 Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();

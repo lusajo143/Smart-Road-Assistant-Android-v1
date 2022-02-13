@@ -23,9 +23,9 @@ public class Splash_Screen extends AppCompatActivity {
             try {
                 JSONObject data = new dbHelper(Splash_Screen.this).getData();
                 if (data.getBoolean("found")) {
-                    if (data.getString("type").equals("mechanic"))
+                    if (data.getString("role").equals("Mechanic"))
                         startActivity(new Intent(Splash_Screen.this, MechanicHome.class));
-                    else if (data.getString("type").equals("owner"))
+                    else if (data.getString("role").equals("Car owner"))
                         startActivity(new Intent(Splash_Screen.this, OwnerHome.class));
                 } else startActivity(new Intent(Splash_Screen.this, Login.class));
 

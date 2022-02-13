@@ -39,7 +39,7 @@ public class dbHelper extends SQLiteOpenHelper {
         JSONObject object = new JSONObject();
         if (cursor.moveToFirst()) {
             object.put("username", cursor.getString(0));
-            object.put("type", cursor.getString(1));
+            object.put("role", cursor.getString(1));
             object.put("found", true);
         } else {
             object.put("found", false);
