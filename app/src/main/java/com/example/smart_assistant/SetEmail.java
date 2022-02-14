@@ -1,10 +1,12 @@
 package com.example.smart_assistant;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +35,7 @@ public class SetEmail extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setEmail(View view) {
         if (email.getText().toString().equals(""))  email.setError("Enter your email here");
         else {
@@ -50,13 +53,12 @@ public class SetEmail extends AppCompatActivity {
                                 publicClass.alert(SetEmail.this, object.getString("message"));
                             }
                         }catch (Exception e) {
-                            Toast.makeText(SetEmail.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SetEmail.this, "Server error!", Toast.LENGTH_SHORT).show();
                         }
                     },
                     error -> {
                         loading.dismiss();
-                        Log.d("TAG", "setEmail: "+error.getMessage());
-                        Toast.makeText(SetEmail.this, "Connection Error! Try again", Toast.LENGTH_SHORT).show();
+                        publicClass.error(SetEmail.this);
                     }) {
                 @Nullable
                 @Override

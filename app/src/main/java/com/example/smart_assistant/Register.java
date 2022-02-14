@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
@@ -47,6 +49,7 @@ public class Register extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void signup(View view) {
 
         if (username.getText().toString().equals("")) username.setError("Enter your username here");
@@ -87,13 +90,12 @@ public class Register extends AppCompatActivity {
 
                             }
                         } catch (Exception e) {
-                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Server error", Toast.LENGTH_SHORT).show();
                         }
                     },
                     error -> {
                         loading.dismiss();
-                        Log.d("TAG", "signup: " + error.getMessage());
-                        Toast.makeText(Register.this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
+                        publicClass.error(Register.this);
                     }) {
                 @Nullable
                 @Override

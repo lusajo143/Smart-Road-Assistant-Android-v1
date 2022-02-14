@@ -23,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.smart_assistant.Login;
 import com.example.smart_assistant.R;
+import com.example.smart_assistant.SetEmail;
 import com.example.smart_assistant.dbHelper;
 import com.example.smart_assistant.publicClass;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -69,6 +70,7 @@ public class OwnerHome extends AppCompatActivity implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.ownerMap);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -172,18 +174,18 @@ public class OwnerHome extends AppCompatActivity implements OnMapReadyCallback {
                             publicClass.alert(OwnerHome.this, object.getString("message"));
                         }
                     } catch (Exception e) {
-                        Toast.makeText(OwnerHome.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OwnerHome.this, "Server error!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
                     loading.dismiss();
-                    Log.d("TAG", "getCloseMechanic: "+error.getMessage());
-                    Toast.makeText(this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
+                    publicClass.error(OwnerHome.this);
                 });
 
         Volley.newRequestQueue(this).add(request);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void fetchName() {
         AlertDialog loading = publicClass.loading(this);
         loading.show();
@@ -194,14 +196,16 @@ public class OwnerHome extends AppCompatActivity implements OnMapReadyCallback {
                         JSONObject object = new JSONObject(response);
                         if (object.getString("status").equals("success")) {
                             ownerNames.setText(object.getString("fullname"));
+                        } else {
+                            publicClass.alert(OwnerHome.this, object.getString("message"));
                         }
                     } catch (Exception e) {
-                        Toast.makeText(OwnerHome.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OwnerHome.this, "Server error!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
                     loading.dismiss();
-                    Toast.makeText(OwnerHome.this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
+                    publicClass.error(OwnerHome.this);
                 }) {
             @Nullable
             @Override

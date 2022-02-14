@@ -22,6 +22,8 @@
         <entry key="app/src/main/res/layout/activity_setup.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/alert_close_mechanic.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/alert_error.xml" value="0.35989583333333336" />
+        <entry key="app/src/main/res/layout/alert_loading.xml" value="0.35989583333333336" />
       </map>
     </option>
   </component>

@@ -47,6 +47,7 @@ public class MechanicLocation extends AppCompatActivity implements OnMapReadyCal
     private LatLng garageLocation = null;
     private Button next;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,7 @@ public class MechanicLocation extends AppCompatActivity implements OnMapReadyCal
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setLocation(String username, double latitude, double longitude) {
         AlertDialog loading = publicClass.loading(MechanicLocation.this);
         loading.show();
@@ -83,13 +85,12 @@ public class MechanicLocation extends AppCompatActivity implements OnMapReadyCal
                             publicClass.alert(MechanicLocation.this, object.getString("message"));
                         }
                     } catch (Exception e) {
-                        Toast.makeText(MechanicLocation.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MechanicLocation.this, "Server error!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
                     loading.dismiss();
-                    Log.d("TAG", "setLocation: "+error.getMessage());
-                    Toast.makeText(MechanicLocation.this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
+                    publicClass.error(MechanicLocation.this);
                 }) {
             @Nullable
             @Override

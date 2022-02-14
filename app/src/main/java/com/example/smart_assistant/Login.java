@@ -2,14 +2,15 @@ package com.example.smart_assistant;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
@@ -46,6 +47,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.loginBtn) {
@@ -75,17 +77,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                     publicClass.alert(Login.this, object.getString("message"));
                                 }
                             } catch (Exception e) {
-                                Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Server error", Toast.LENGTH_SHORT).show();
                             }
                         },
                         error -> {
                             loading.dismiss();
-                            Toast.makeText(Login.this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
-                        }) {
+                            publicClass.error(Login.this);                        }) {
                     @Nullable
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap params = new HashMap();
+                        HashMap<String, String> params = new HashMap<>();
                         params.put("username", username.getText().toString());
                         params.put("password", password.getText().toString());
                         return params;

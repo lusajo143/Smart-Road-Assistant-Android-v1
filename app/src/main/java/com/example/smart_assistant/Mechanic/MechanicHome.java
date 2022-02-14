@@ -19,6 +19,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.smart_assistant.Login;
 import com.example.smart_assistant.R;
+import com.example.smart_assistant.SetEmail;
 import com.example.smart_assistant.dbHelper;
 import com.example.smart_assistant.publicClass;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -95,6 +96,7 @@ public class MechanicHome extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void fetchData() {
         AlertDialog loading = publicClass.loading(MechanicHome.this);
         loading.show();
@@ -116,13 +118,13 @@ public class MechanicHome extends AppCompatActivity implements OnMapReadyCallbac
                             gMap.addMarker(markerOptions).setDraggable(true);
                         }
                     } catch (Exception e) {
-                        Toast.makeText(MechanicHome.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MechanicHome.this, "Server error!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
                     loading.dismiss();
-                    Toast.makeText(MechanicHome.this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
-                }) {
+                    publicClass.error(MechanicHome.this);
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() {
