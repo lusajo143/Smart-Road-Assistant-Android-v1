@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/active.xml" value="0.3707692307692308" />
         <entry key="app/src/main/res/drawable/active_right.xml" value="0.3765625" />
+        <entry key="app/src/main/res/drawable/bg.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/drawable/outline.xml" value="0.3765625" />
         <entry key="app/src/main/res/drawable/outline_left.xml" value="0.3765625" />
         <entry key="app/src/main/res/drawable/outline_right.xml" value="0.3765625" />

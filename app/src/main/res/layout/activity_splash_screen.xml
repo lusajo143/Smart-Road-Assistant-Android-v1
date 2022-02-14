@@ -6,21 +6,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@drawable/bg"
     tools:context=".Splash_Screen">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SMART ON ROAD VEHICLE"
+        android:text="Smart Road Assistant"
         android:layout_gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         android:padding="5dp"
-        android:textSize="20dp"/>
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:max="3"/>
+        android:textSize="20dp"/>
 
 </LinearLayout>
