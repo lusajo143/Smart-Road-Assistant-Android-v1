@@ -50,7 +50,7 @@ public class MechanicHome extends AppCompatActivity implements OnMapReadyCallbac
 
         fullname = findViewById(R.id.mechaNames);
         logout = findViewById(R.id.mechaLogout);
-        phone = findViewById(R.id.mechaPhone);
+        phone = findViewById(R.id.mechaEmail);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -98,23 +98,22 @@ public class MechanicHome extends AppCompatActivity implements OnMapReadyCallbac
     private void fetchData() {
         AlertDialog loading = publicClass.loading(MechanicHome.this);
         loading.show();
-        StringRequest request = new StringRequest(Request.Method.POST, publicClass.baseUrl + "getMechanicData.php",
+        StringRequest request = new StringRequest(Request.Method.POST, publicClass.baseUrl + "getMechanicData",
                 response -> {
                     loading.dismiss();
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getString("resp").equals("done")) {
-                            fullname.setText(object.getString("fname") + " " + object.getString("lname"));
-                            phone.setText(object.getString("phone"));
+                        if (object.getString("status").equals("success")) {
+                            fullname.setText(object.getString("fullname"));
+                            phone.setText(object.getString("email"));
                             LatLng latLng = new LatLng(
                                     Double.parseDouble(object.getString("lat")),
-                                    Double.parseDouble(object.getString("long"))
+                                    Double.parseDouble(object.getString("lng"))
                             );
                             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Garage location");
                             gMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                             gMap.addMarker(markerOptions).setDraggable(true);
-
                         }
                     } catch (Exception e) {
                         Toast.makeText(MechanicHome.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -129,7 +128,7 @@ public class MechanicHome extends AppCompatActivity implements OnMapReadyCallbac
             protected Map<String, String> getParams() {
                 HashMap<String, String> params = new HashMap<>();
                 try {
-                    params.put("id", new dbHelper(MechanicHome.this).getData().getString("id"));
+                    params.put("username", new dbHelper(MechanicHome.this).getData().getString("username"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

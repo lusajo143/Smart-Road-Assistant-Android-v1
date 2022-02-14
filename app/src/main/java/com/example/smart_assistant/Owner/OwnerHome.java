@@ -101,71 +101,75 @@ public class OwnerHome extends AppCompatActivity implements OnMapReadyCallback {
     private void getCloseMechanic() {
         AlertDialog loading = publicClass.loading(this);
         loading.show();
-        StringRequest request = new StringRequest(Request.Method.GET, publicClass.baseUrl + "getMechanics.php",
+        StringRequest request = new StringRequest(Request.Method.GET, publicClass.baseUrl + "getMechanics",
                 response -> {
                     loading.dismiss();
                     try {
-                        JSONArray mechanics = new JSONArray(response);
-                        if (mechanics.length() == 0) {
-                            Toast.makeText(OwnerHome.this, "No mechanic found", Toast.LENGTH_SHORT).show();
-                        } else {
-                            JSONObject closest = null;
-                            float distance = 0;
+                        JSONObject object = new JSONObject(response);
+                        if (object.getString("status").equals("success")) {
+                            JSONArray mechanics = object.getJSONArray("Mechanics");
+                            if (mechanics.length() == 0) {
+                                Toast.makeText(OwnerHome.this, "No mechanic found", Toast.LENGTH_SHORT).show();
+                            } else {
+                                JSONObject closest = null;
+                                float distance = 0;
 
-                            for (int i = 0; i < mechanics.length(); i++) {
-                                JSONObject mechanic = mechanics.getJSONObject(i);
-                                LatLng location = new LatLng(
-                                        Double.parseDouble(mechanic.getString("lat")),
-                                        Double.parseDouble(mechanic.getString("long"))
-                                );
+                                for (int i = 0; i < mechanics.length(); i++) {
+                                    JSONObject mechanic = mechanics.getJSONObject(i);
+                                    LatLng location = new LatLng(
+                                            Double.parseDouble(mechanic.getString("lat")),
+                                            Double.parseDouble(mechanic.getString("lng"))
+                                    );
 
-                                float[] result = new float[1];
-                                Location.distanceBetween(latLng.latitude, latLng.longitude, location.latitude, location.longitude, result);
+                                    float[] result = new float[1];
+                                    Location.distanceBetween(latLng.latitude, latLng.longitude, location.latitude, location.longitude, result);
 
-                                if ((distance >= result[0] && distance != 0) || (distance == 0)) {
-                                    distance = result[0];
-                                    closest = mechanic;
+                                    if ((distance >= result[0] && distance != 0) || (distance == 0)) {
+                                        distance = result[0];
+                                        closest = mechanic;
+                                    }
+
                                 }
 
+
+                                if (closestLatLng != null) {
+                                    markerClose.remove();
+                                }
+                                closestLatLng = new LatLng(
+                                        Double.parseDouble(closest.getString("lat")),
+                                        Double.parseDouble(closest.getString("lng"))
+                                );
+
+                                MarkerOptions markerOptions = new MarkerOptions().position(closestLatLng).title(
+                                        closest.getString("fullname")
+                                ).icon(BitmapDescriptorFactory
+                                        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                                gMap.animateCamera(CameraUpdateFactory.newLatLng(closestLatLng));
+                                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(closestLatLng, 15));
+                                markerClose = gMap.addMarker(markerOptions);
+                                markerClose.setVisible(true);
+
+                                // Show Details
+                                AlertDialog details = new AlertDialog.Builder(OwnerHome.this)
+                                        .setView(R.layout.alert_close_mechanic)
+                                        .setCancelable(true)
+                                        .create();
+
+                                details.show();
+
+                                TextView fullName = details.findViewById(R.id.fullName);
+                                TextView phone = details.findViewById(R.id.phoneNumber);
+                                TextView lat = details.findViewById(R.id.latitude);
+                                TextView lng = details.findViewById(R.id.longitude);
+
+                                fullName.setText( closest.getString("fullname"));
+                                phone.setText(closest.getString("email"));
+                                lat.setText(closest.getString("lat"));
+                                lng.setText(closest.getString("lng"));
+
                             }
-
-                            Log.d("TAG", "getCloseMechanic: " +
-                                    closest);
-                            if (closestLatLng != null) {
-                                markerClose.remove();
-                            }
-                            closestLatLng = new LatLng(
-                                    Double.parseDouble(closest.getString("lat")),
-                                    Double.parseDouble(closest.getString("long"))
-                            );
-
-                            MarkerOptions markerOptions = new MarkerOptions().position(closestLatLng).title(
-                                    closest.getString("fname") + " " + closest.getString("lname")
-                            ).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                            gMap.animateCamera(CameraUpdateFactory.newLatLng(closestLatLng));
-                            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(closestLatLng, 15));
-                            markerClose = gMap.addMarker(markerOptions);
-                            markerClose.setVisible(true);
-
-                            // Show Details
-                            AlertDialog details = new AlertDialog.Builder(OwnerHome.this)
-                                    .setView(R.layout.alert_close_mechanic)
-                                    .setCancelable(true)
-                                    .create();
-
-                            details.show();
-
-                            TextView fullName = details.findViewById(R.id.fullName);
-                            TextView phone = details.findViewById(R.id.phoneNumber);
-                            TextView lat = details.findViewById(R.id.latitude);
-                            TextView lng = details.findViewById(R.id.longitude);
-
-                            fullName.setText(closest.getString("fname") + " " + closest.getString("lname"));
-                            phone.setText(closest.getString("phone"));
-                            lat.setText(closest.getString("lat"));
-                            lng.setText(closest.getString("long"));
-
+                        } else {
+                            publicClass.alert(OwnerHome.this, object.getString("message"));
                         }
                     } catch (Exception e) {
                         Toast.makeText(OwnerHome.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -173,6 +177,7 @@ public class OwnerHome extends AppCompatActivity implements OnMapReadyCallback {
                 },
                 error -> {
                     loading.dismiss();
+                    Log.d("TAG", "getCloseMechanic: "+error.getMessage());
                     Toast.makeText(this, "Connection error! Try again", Toast.LENGTH_SHORT).show();
                 });
 
@@ -182,13 +187,13 @@ public class OwnerHome extends AppCompatActivity implements OnMapReadyCallback {
     private void fetchName() {
         AlertDialog loading = publicClass.loading(this);
         loading.show();
-        StringRequest request = new StringRequest(Request.Method.POST, publicClass.baseUrl + "getOwnerData.php",
+        StringRequest request = new StringRequest(Request.Method.POST, publicClass.baseUrl + "getOwnerData",
                 response -> {
                     loading.dismiss();
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getString("resp").equals("done")) {
-                            ownerNames.setText(object.getString("fname") + " " + object.getString("lname"));
+                        if (object.getString("status").equals("success")) {
+                            ownerNames.setText(object.getString("fullname"));
                         }
                     } catch (Exception e) {
                         Toast.makeText(OwnerHome.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -203,7 +208,7 @@ public class OwnerHome extends AppCompatActivity implements OnMapReadyCallback {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
                 try {
-                    params.put("id", new dbHelper(OwnerHome.this).getData().getString("id"));
+                    params.put("username", new dbHelper(OwnerHome.this).getData().getString("username"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

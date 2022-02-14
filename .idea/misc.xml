@@ -13,7 +13,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.20104166666666667" />
-        <entry key="app/src/main/res/layout/activity_mechanic_home.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_mechanic_home.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_mechanic_location.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/activity_mechanics_register.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_owner_home.xml" value="0.33" />
