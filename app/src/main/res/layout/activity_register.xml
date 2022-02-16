@@ -4,24 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".Register">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/purple_500"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_margin="20dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
-        <ScrollView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="20dp"
             android:layout_height="wrap_content"
             >
             <LinearLayout
@@ -159,8 +156,9 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </com.google.android.material.card.MaterialCardView>
 
-    </com.google.android.material.card.MaterialCardView>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
